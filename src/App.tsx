@@ -1,10 +1,25 @@
-import reactLogo from './assets/react.svg'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { Footer } from './components/Footer'
+import { Header } from './components/Header'
+import { Carrinho } from './pages/Carrinho'
+import { Home } from './pages/Home'
+import { Login } from './pages/Login'
 import './styles/global.css'
 
 function App() {
 
   return (
-    <h1>oi</h1>
+    <>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/carrinho' element={<Carrinho />} />
+          <Route path='/login' element={<Login />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </>
   )
 }
 
