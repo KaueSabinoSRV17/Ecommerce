@@ -2,10 +2,18 @@
 module.exports = {
   content: [
     'index.html',
-    'src/**/*.ts'
+    'src/**/*.tsx'
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'blue-main': '#133984',
+        'yellow-banner': '#f39200'
+      },
+      fontFamily: {
+        main: ['Montserrat']
+      }
+    },
   },
   plugins: [],
 }

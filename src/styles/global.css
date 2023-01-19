@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body, input, button {
+    font-size: 16px;
+    font-family: 'montserrat', san-serif
+}

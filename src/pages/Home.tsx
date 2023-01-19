@@ -1,5 +1,10 @@
+import { DiferenciaisHome } from "../components/DiferenciaisHome";
+
 export function Home() {
     return (
-        <h1 className="text-center">Bem vindo!</h1>
+        <>
+            <img src="" alt="Banner" className="h-72 w-screen" />
+            <DiferenciaisHome />
+        </>
     )
 }
