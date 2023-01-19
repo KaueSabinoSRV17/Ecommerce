@@ -12,12 +12,14 @@ function App() {
     <>
       <Router>
         <Header />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/carrinho' element={<Carrinho />} />
-          <Route path='/login' element={<Login />} />
-        </Routes>
-        <Footer />
+        <main className='flex-1 w-full'>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/carrinho' element={<Carrinho />} />
+            <Route path='/login' element={<Login />} />
+          </Routes>
+        </main>
+       <Footer />
       </Router>
     </>
   )

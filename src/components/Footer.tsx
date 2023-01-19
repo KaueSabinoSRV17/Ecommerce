@@ -1,6 +1,6 @@
 export function Footer() {
     return (
-        <footer>
+        <footer className="flex-2">
             Footer
         </footer>
     )
