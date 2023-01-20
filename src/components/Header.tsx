@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { componenteComAcessoAosProdutosProcurados } from "../App";
 
-export function Header() {
+export function Header({setProdutosProcurados}: componenteComAcessoAosProdutosProcurados) {
 
-  const [pesquisa, setPesquisa] = useState<string>("");
+  const navigation = useNavigate()
+
+  const goToProductsPage = () => navigation({
+    pathname: '/produtos',
+  })
 
   return (
     <>
@@ -13,11 +18,14 @@ export function Header() {
         </Link>
         <nav className="flex justify-between">
             <input
+                className="text-black"
                 type="text"
                 placeholder="Digite o que deseja"
-                onChange={(evento) => setPesquisa(evento.target.value)}
+                onChange={(evento) => setProdutosProcurados(evento.target.value)}
             />
-        <button>Pesquisar</button>
+        <button 
+            onClick={goToProductsPage}
+            onPointerDown={goToProductsPage}>Pesquisar</button>
         </nav>
         <nav>
             <ul className="flex items-center justify-center gap-4">
@@ -32,13 +40,13 @@ export function Header() {
         </header>
         <nav className="bg-blue-main flex justify-center items-center py-10 text-white">
             <ul className="flex gap-10 w-screen justify-center">
-                <li>Categoria</li>
-                <li>Categoria</li>
-                <li>Categoria</li>
-                <li>Categoria</li>
-                <li>Categoria</li>
-                <li>Categoria</li>
-                <li>Categoria</li>
+                <Link to="/produtos">Categoria</Link>
+                <Link to="/produtos">Categoria</Link>
+                <Link to="/produtos">Categoria</Link>
+                <Link to="/produtos">Categoria</Link>
+                <Link to="/produtos">Categoria</Link>
+                <Link to="/produtos">Categoria</Link>
+                <Link to="/produtos">Categoria</Link>
             </ul>
         </nav>
     </>
