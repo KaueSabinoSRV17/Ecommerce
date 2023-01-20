@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { componenteComAcessoAosProdutosProcurados } from "../App";
+import { ComponenteComAcessoAosProdutosProcurados } from "../App";
 
-export function Header({setProdutosProcurados}: componenteComAcessoAosProdutosProcurados) {
+export function Header({setProdutosProcurados}: ComponenteComAcessoAosProdutosProcurados) {
 
   const navigation = useNavigate()
 

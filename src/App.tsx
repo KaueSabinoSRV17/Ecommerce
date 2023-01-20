@@ -5,10 +5,11 @@ import { Header } from './components/Header'
 import { Carrinho } from './pages/Carrinho'
 import { Home } from './pages/Home'
 import { Login } from './pages/Login'
+import { NotFound } from './pages/NotFound'
 import { Produtos } from './pages/Produtos'
 import './styles/global.css'
 
-export interface componenteComAcessoAosProdutosProcurados {
+export interface ComponenteComAcessoAosProdutosProcurados {
   setProdutosProcurados(pesquisa: string): void,
 }
 
@@ -26,6 +27,7 @@ function App() {
         <Header setProdutosProcurados={setProdutosProcurados} />
         <main className='flex-1 w-full'>
           <Routes>
+            <Route path='*' element={<NotFound />} />
             <Route path='/' element={<Home />} />
             <Route path='/carrinho' element={<Carrinho />} />
             <Route path='/login' element={<Login setProdutosProcurados={setProdutosProcurados} />} />
