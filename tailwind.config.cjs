@@ -8,7 +8,8 @@ module.exports = {
     extend: {
       colors: {
         'blue-main': '#133984',
-        'yellow-banner': '#f39200'
+        'yellow-banner': '#f39200',
+        'background-main': '#ededed'
       },
       fontFamily: {
         main: ['Montserrat']
