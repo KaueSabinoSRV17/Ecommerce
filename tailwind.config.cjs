@@ -9,7 +9,8 @@ module.exports = {
       colors: {
         'blue-main': '#133984',
         'yellow-banner': '#f39200',
-        'background-main': '#ededed'
+        'background-main': '#ededed',
+        'pink-button': '#dd0641'
       },
       fontFamily: {
         main: ['Montserrat']

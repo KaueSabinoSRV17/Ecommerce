@@ -21,7 +21,7 @@ export function Footer() {
 
     return (
         <footer className="flex-2 font-normal bg-blue-main text-white flex flex-col items-center">
-            <section className="grid grid-cols-4 mx-20 mt-8">
+            <section className="grid grid-cols-4 mx-20 mt-[64px]">
                <FooterColumn>
                     <img src="" alt="Logo" className="h-20 w-44" />
                     <p className="text-center leading-8 text-sm">
