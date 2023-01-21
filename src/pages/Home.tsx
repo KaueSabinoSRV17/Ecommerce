@@ -1,6 +1,6 @@
 import { DiferenciaisHome } from "../components/DiferenciaisHome";
 
-export function Home() {
+function Home() {
     return (
         <>
             <img src="" alt="Banner" className="h-72 w-screen" />
@@ -8,3 +8,5 @@ export function Home() {
         </>
     )
 }
+
+export default Home

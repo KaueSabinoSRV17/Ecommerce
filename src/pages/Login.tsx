@@ -3,7 +3,7 @@ import { ComponenteComAcessoAosProdutosProcurados } from "../App";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 
-export function Login({ setProdutosProcurados }: ComponenteComAcessoAosProdutosProcurados) {
+function Login({ setProdutosProcurados }: ComponenteComAcessoAosProdutosProcurados) {
     setProdutosProcurados('')
 
     return (
@@ -23,3 +23,5 @@ export function Login({ setProdutosProcurados }: ComponenteComAcessoAosProdutosP
         </section>
     )
 }
+
+export default Login
