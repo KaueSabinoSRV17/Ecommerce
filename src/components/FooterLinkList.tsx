@@ -13,9 +13,9 @@ export function FooterLinkList({ listOfLinks, title }: { listOfLinks: Array<Link
             <FooterColumnTitle title={title} />
             <nav>
                 <ul>
-                   {listOfLinks.map(link => {
+                   {listOfLinks.map((link, index) => {
                         return (
-                            <FooterColumListItem>
+                            <FooterColumListItem key={index}>
                                 <Link to={link.link}>{link.name}</Link>
                             </FooterColumListItem>
                         )

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react'
+import { createContext, lazy, Suspense, useContext, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
@@ -19,22 +19,24 @@ export interface ComponenteQueRecebeProdutosProcurados {
   produtosProcurados: string | undefined
 }
 
+export const ProdutosProcuradosContext = createContext('Produtos')
+
 function App() {
 
-  const [produtosProcurados, setProdutosProcurados] = useState<string>()
+  const [pesquisa, setPesquisa] = useState<string>('')
 
   return (
     <>
       <Router>
-        <Header setProdutosProcurados={setProdutosProcurados} />
+        <Header setPesquisa={setPesquisa} />
         <main className='flex-1 w-full'>
           <Suspense fallback={<div>Carregando.....</div>}>
             <Routes>
               <Route path='*' element={<NotFound />} />
               <Route path='/' element={<Home />} />
               <Route path='/carrinho' element={<Carrinho />} />
-              <Route path='/login' element={<Login setProdutosProcurados={setProdutosProcurados} />} />
-              <Route path='/produtos' element={<Produtos produtosProcurados={produtosProcurados} />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/produtos' element={<Produtos pesquisa={pesquisa} />} />
             </Routes>
           </Suspense>
         </main>

@@ -1,14 +1,12 @@
 import { auth, app } from '../../firebase'
-import { EmailAuthProvider, signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ComponenteComAcessoAosProdutosProcurados } from "../App";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 
 
-function Login({ setProdutosProcurados }: ComponenteComAcessoAosProdutosProcurados) {
-    setProdutosProcurados('')
+function Login() {
     interface LoginData {
         'email': string,
         'password': string

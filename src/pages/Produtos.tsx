@@ -1,10 +1,10 @@
-import { useSearchParams } from "react-router-dom"
-import { ComponenteQueRecebeProdutosProcurados } from "../App"
+import { useParams, useSearchParams } from "react-router-dom"
+import { ComponenteQueRecebeProdutosProcurados, ProdutosProcuradosContext } from "../App"
 
-function Produtos({produtosProcurados}: ComponenteQueRecebeProdutosProcurados) {
+function Produtos({pesquisa}: {pesquisa: string}) {
 
     return (
-        <h1>{produtosProcurados}</h1>
+        <h1>{pesquisa}</h1>
     )
 }
 
