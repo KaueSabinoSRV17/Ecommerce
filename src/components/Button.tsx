@@ -6,6 +6,6 @@ interface ButtonProps extends PropsWithChildren {
 
 export function Button({children, color}: ButtonProps) {
     return (
-        <button className="px-3 py-[14px] bg-pink-button text-white rounded-full w-40">{children}</button>
+        <button type="submit" className="px-3 py-[14px] bg-pink-button text-white rounded-full w-40">{children}</button>
     )
 }
