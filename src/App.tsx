@@ -1,4 +1,5 @@
 import { createContext, lazy, Suspense, useContext, useState } from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
@@ -20,7 +21,7 @@ export interface ComponenteQueRecebeProdutosProcurados {
   produtosProcurados: string | undefined
 }
 
-export const ProdutosProcuradosContext = createContext('Produtos')
+const queryClient = new QueryClient()
 
 function App() {
 
@@ -28,22 +29,24 @@ function App() {
 
   return (
     <>
-      <Router>
-        <Header setPesquisa={setPesquisa} />
-        <main className='flex-1 w-full'>
-          <Suspense fallback={<div>Carregando.....</div>}>
-            <Routes>
-              <Route path='*' element={<NotFound />} />
-              <Route path='/' element={<Home />} />
-              <Route path='/carrinho' element={<Carrinho />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/produtos' element={<Produtos pesquisa={pesquisa} />} />
-              <Route path='/cadastro' element={<Cadastro />} />
-            </Routes>
-          </Suspense>
-        </main>
-       <Footer />
-      </Router>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <Header setPesquisa={setPesquisa} />
+          <main className='flex-1 w-full'>
+            <Suspense fallback={<div>Carregando.....</div>}>
+              <Routes>
+                <Route path='*' element={<NotFound />} />
+                <Route path='/' element={<Home />} />
+                <Route path='/carrinho' element={<Carrinho />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/produtos' element={<Produtos pesquisa={pesquisa} />} />
+                <Route path='/cadastro' element={<Cadastro />} />
+              </Routes>
+            </Suspense>
+          </main>
+        <Footer />
+        </Router>
+      </QueryClientProvider>
     </>
   )
 }
