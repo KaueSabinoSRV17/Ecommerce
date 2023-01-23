@@ -1,7 +1,7 @@
 import { auth, app } from '../../firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import { useMutation } from 'react-query';
@@ -15,14 +15,10 @@ export interface LoginData {
 
 function Login() {
 
+    const navigate = useNavigate()
+
     const { mutate, isLoading, isError, error } = useMutation(loginRequest, {
-        onError: error => {
-            setLogin(login => {
-                const errorMessage = error as string
-                const newState = {...login, errorMessage}
-                return newState
-            })
-        }
+        onSuccess: () => navigate('..')
     })
 
     type ErrorResponse = {message: string}
