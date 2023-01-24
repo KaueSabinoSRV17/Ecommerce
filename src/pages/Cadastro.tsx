@@ -1,3 +1,4 @@
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Button } from "../components/Button"
@@ -5,13 +6,34 @@ import { Input } from "../components/Input"
 
 function Cadastro() {
 
+    interface FormValues {
+        nome: string,
+        email: string,
+        cpfCnpj: string,
+        inscricaoEstadual?: string,
+        celular: string,
+        dataDeNascimento: string,
+        senha: string,
+        confirmacaoDeSenha: string,
+        cep?: string,
+        logradouro: string,
+        bairro: string,
+        cidade: string,
+        estado: string,
+        numero: string,
+        complemento?: string,
+    }
+
+    const { register, handleSubmit } = useForm<FormValues>()
+    const onSubmit: SubmitHandler<FormValues> = data => console.log(data)
+
     function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
         event.preventDefault()
         const { name, value } = event.target
     }
 
     return (
-        <form className="mx-auto my-20 w-[45%]">
+        <form className="mx-auto my-20 w-[45%]" onSubmit={handleSubmit(onSubmit)}>
             <header className="flex justify-between">
                 <h1>Cadastre-se</h1>
                 <span>Já é cadastrado? <Link to="/login">Entrar</Link></span>
@@ -41,20 +63,20 @@ function Cadastro() {
                     Pessoa
                 </label>
                 <label htmlFor="pessoaTipo">
-                    <input type="radio" name="pessoaTipo" id="pessoaTipo" />
+                    <input type="radio" value="fisica" name="pessoaTipo" id="pessoaTipo" />
                     Física
-                    <input type="radio" name="pessoaTipo" id="pessoaTipo" />
+                    <input type="radio" value="juridica" name="pessoaTipo" id="pessoaTipo" />
                     Jurídica
                 </label>
-                <Input placeholder="Digite seu nome completo/razão social" />
-                <Input placeholder="Digite seu e-mail" />
+                <input {...register("nome")} placeholder="Digite seu nome completo/razão social" />
+                <Input {...register("email")} placeholder="Digite seu e-mail" />
                 <fieldset className="grid grid-cols-2 gap-4">
-                    <Input placeholder="Digite seu CPF/CNPJ" />
-                    <Input placeholder="Digite sua Inscrição Estadual" hidden />
-                    <Input placeholder="Digite seu celular/telefone" />
-                    <Input placeholder="dd/mm/aaaa" type="date" />
-                    <Input placeholder="Senha" required />
-                    <Input placeholder="Confirme sua senha" />
+                    <Input {...register("cpfCnpj")} placeholder="Digite seu CPF/CNPJ" />
+                    <Input {...register("inscricaoEstadual")} placeholder="Digite sua Inscrição Estadual" hidden />
+                    <Input {...register("celular")} placeholder="Digite seu celular/telefone" />
+                    <Input {...register("dataDeNascimento")} placeholder="dd/mm/aaaa" type="date" />
+                    <Input {...register("senha")} placeholder="Senha" required />
+                    <Input {...register("confirmacaoDeSenha")} placeholder="Confirme sua senha" />
                 </fieldset>
                 <h2>Regras de Senha</h2>
                 <ul>
@@ -70,15 +92,15 @@ function Cadastro() {
                 <legend>
                     Endereço
                 </legend>
-                <Input placeholder="Digite seu CEP" />
-                <Input placeholder="Digite seu logradouro" required />
+                <Input {...register("cep")} placeholder="Digite seu CEP" />
+                <Input {...register("logradouro")} placeholder="Digite seu logradouro" required />
                 <fieldset className="grid grid-cols-2 gap-4">
-                    <Input placeholder="Digite seu bairro" required />
-                    <Input placeholder="Digite sua cidade" required />
-                    <Input placeholder="Digite seu estado" required />
-                    <Input placeholder="Digite seu número" required />
+                    <Input {...register("bairro")} placeholder="Digite seu bairro" required />
+                    <Input {...register("cidade")} placeholder="Digite sua cidade" required />
+                    <Input {...register("estado")} placeholder="Digite seu estado" required />
+                    <Input {...register("numero")} placeholder="Digite seu número" required />
                 </fieldset>
-                <Input placeholder="Digite seu complemento" />
+                <Input {...register("complemento")} placeholder="Digite seu complemento" />
             </fieldset>
             <label className="flex gap-2 items-center my-12">
                 <Input type="checkbox" required />

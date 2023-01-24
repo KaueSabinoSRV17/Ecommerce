@@ -15,7 +15,7 @@ export function Input({ placeholder, name, onChange, required = false, type, hid
         styles = styles + 'opacity-0'
     }
 
-    return <input 
+    return <input
         required={required}
         type={type}
         onChange={onChange}
