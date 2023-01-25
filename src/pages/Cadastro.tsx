@@ -4,28 +4,28 @@ import { Link } from "react-router-dom"
 import { Button } from "../components/Button"
 import { Input } from "../components/Input"
 
+export interface CadastroForm {
+    nome: string,
+    email: string,
+    cpfCnpj: string,
+    inscricaoEstadual?: string,
+    celular: string,
+    dataDeNascimento: string,
+    senha: string,
+    confirmacaoDeSenha: string,
+    cep?: string,
+    logradouro: string,
+    bairro: string,
+    cidade: string,
+    estado: string,
+    numero: string,
+    complemento?: string,
+}
+
 function Cadastro() {
 
-    interface FormValues {
-        nome: string,
-        email: string,
-        cpfCnpj: string,
-        inscricaoEstadual?: string,
-        celular: string,
-        dataDeNascimento: string,
-        senha: string,
-        confirmacaoDeSenha: string,
-        cep?: string,
-        logradouro: string,
-        bairro: string,
-        cidade: string,
-        estado: string,
-        numero: string,
-        complemento?: string,
-    }
-
-    const { register, handleSubmit } = useForm<FormValues>()
-    const onSubmit: SubmitHandler<FormValues> = data => console.log(data)
+    const { register, handleSubmit } = useForm<CadastroForm>()
+    const onSubmit: SubmitHandler<CadastroForm> = data => console.log(data)
 
     function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
         event.preventDefault()
@@ -68,15 +68,15 @@ function Cadastro() {
                     <input type="radio" value="juridica" name="pessoaTipo" id="pessoaTipo" />
                     Jurídica
                 </label>
-                <input {...register("nome")} placeholder="Digite seu nome completo/razão social" />
-                <Input {...register("email")} placeholder="Digite seu e-mail" />
+                <Input label="nome" register={register} placeholder="Digite seu nome completo/razão social" />
+                <Input label="email" register={register} placeholder="Digite seu e-mail" />
                 <fieldset className="grid grid-cols-2 gap-4">
-                    <Input {...register("cpfCnpj")} placeholder="Digite seu CPF/CNPJ" />
-                    <Input {...register("inscricaoEstadual")} placeholder="Digite sua Inscrição Estadual" hidden />
-                    <Input {...register("celular")} placeholder="Digite seu celular/telefone" />
-                    <Input {...register("dataDeNascimento")} placeholder="dd/mm/aaaa" type="date" />
-                    <Input {...register("senha")} placeholder="Senha" required />
-                    <Input {...register("confirmacaoDeSenha")} placeholder="Confirme sua senha" />
+                    <Input label="cpfCnpj" register={register} placeholder="Digite seu CPF/CNPJ" />
+                    <Input label="inscricaoEstadual" register={register} placeholder="Digite sua Inscrição Estadual" hidden />
+                    <Input label="celular" register={register} placeholder="Digite seu celular/telefone" />
+                    <Input label="dataDeNascimento" register={register} placeholder="dd/mm/aaaa" type="date" />
+                    <Input label="senha" register={register} placeholder="Senha" required />
+                    <Input label="confirmacaoDeSenha" register={register} placeholder="Confirme sua senha" />
                 </fieldset>
                 <h2>Regras de Senha</h2>
                 <ul>
@@ -92,18 +92,18 @@ function Cadastro() {
                 <legend>
                     Endereço
                 </legend>
-                <Input {...register("cep")} placeholder="Digite seu CEP" />
-                <Input {...register("logradouro")} placeholder="Digite seu logradouro" required />
+                <Input label="cep" register={register} placeholder="Digite seu CEP" />
+                <Input label="logradouro" register={register} placeholder="Digite seu logradouro" required />
                 <fieldset className="grid grid-cols-2 gap-4">
-                    <Input {...register("bairro")} placeholder="Digite seu bairro" required />
-                    <Input {...register("cidade")} placeholder="Digite sua cidade" required />
-                    <Input {...register("estado")} placeholder="Digite seu estado" required />
-                    <Input {...register("numero")} placeholder="Digite seu número" required />
+                    <Input label="bairro" register={register} placeholder="Digite seu bairro" required />
+                    <Input label="cidade" register={register} placeholder="Digite sua cidade" required />
+                    <Input label="estado" register={register} placeholder="Digite seu estado" required />
+                    <Input label="numero" register={register} placeholder="Digite seu número" required />
                 </fieldset>
-                <Input {...register("complemento")} placeholder="Digite seu complemento" />
+                <Input label="complemento" register={register} placeholder="Digite seu complemento" />
             </fieldset>
             <label className="flex gap-2 items-center my-12">
-                <Input type="checkbox" required />
+                <input  type="checkbox" required />
                 Estou de acordo com as políticas da Auto Geral Autopeças
             </label>
             <Button>Criar Conta</Button>

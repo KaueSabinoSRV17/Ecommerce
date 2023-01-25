@@ -6,6 +6,7 @@ import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import { useMutation } from 'react-query';
 import { loginRequest } from '../utils/api/loginRequest';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 export interface LoginData {
     'email': string,
@@ -14,35 +15,24 @@ export interface LoginData {
 }
 
 function Login() {
+    
+    // Hook Form
+    const { register, handleSubmit } = useForm<LoginData>()
+    const onSubmit: SubmitHandler<LoginData> = data => mutate(data)
 
+    // Router
     const navigate = useNavigate()
 
+    // React Query
     const { mutate, isLoading, isError, error } = useMutation(loginRequest, {
         onSuccess: () => navigate('..')
     })
-
-    type ErrorResponse = {message: string}
-
-    const [login, setLogin] = useState<LoginData>({ 'email': '', 'password': '' })
-
-    async function handleLoginForm(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        mutate(login)
-    }
-
-    function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
-        event.preventDefault()
-        const { name, value } = event.target
-        setLogin(login => {
-            const newValue = { ...login, [name]: value }
-            return newValue
-        })
-    }
 
     function handleAuthError({message}: ErrorResponse) {
         const messageStart = message.includes('email') ? 'Este E-mail não está cadastrado!' : 'Senha Inválida!'
         return `${messageStart}`
     }
+    type ErrorResponse = {message: string}
 
     return (
         <section className="my-[88px] mx-auto text-blue-main w-[560px]">
@@ -50,14 +40,14 @@ function Login() {
                 <h1 className="font-bold text-2xl">Entrar</h1>
                 <span>Não é cadastrado? <Link to="/cadastro" className="font-bold">Cadastre-se</Link></span>
             </header>
-            <form action="" className="flex flex-col gap-6" onSubmit={handleLoginForm}>
+            <form action="" className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
                 <Input
-                    onChange={handleInput}
-                    name="email"
+                    register={register}
+                    label="email"
                     placeholder="E-mail" />
                 <Input
-                    onChange={handleInput}
-                    name="password"
+                    register={register}
+                    label="password"
                     placeholder="Senha" />
 
                 {!isLoading && isError && (handleAuthError(error as ErrorResponse))}
