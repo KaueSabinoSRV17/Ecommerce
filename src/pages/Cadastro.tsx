@@ -1,10 +1,14 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Button } from "../components/Button"
 import { Input } from "../components/Input"
 
+import { db } from '../../firebase'
+import { collection, addDoc } from 'firebase/firestore'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+
 export interface CadastroForm {
+    pessoaTipo: string
     nome: string,
     email: string,
     cpfCnpj: string,
@@ -25,7 +29,10 @@ export interface CadastroForm {
 function Cadastro() {
 
     const { register, handleSubmit } = useForm<CadastroForm>()
-    const onSubmit: SubmitHandler<CadastroForm> = data => console.log(data)
+    const onSubmit: SubmitHandler<CadastroForm> = async data => {
+       const cadastroCollection = collection(db, 'cliente')
+       await addDoc(cadastroCollection, data)
+    }
 
     return (
         <form className="mx-auto my-20 w-[45%]" onSubmit={handleSubmit(onSubmit)}>
@@ -58,7 +65,7 @@ function Cadastro() {
                     Pessoa
                 </label>
                 <label htmlFor="pessoaTipo">
-                    <input type="radio" value="fisica" name="pessoaTipo" id="pessoaTipo" />
+                    <input {...register("pessoaTipo")} type="radio" value="fisica" name="pessoaTipo" id="pessoaTipo" />
                     Física
                     <input type="radio" value="juridica" name="pessoaTipo" id="pessoaTipo" />
                     Jurídica
