@@ -1,11 +1,20 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom"
 import { Button } from "../components/Button"
-import { Input } from "../components/Input"
 
 import { db } from '../../firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { PessoaTipoInput } from "../components/input/PessoaTipoInput";
+import { EmailInput } from "../components/input/EmailInput";
+import { CpfCnpjInput } from "../components/input/CpfCnpjInput";
+import { InscricaoEstadualInput } from "../components/input/InscricaoEstadualInput";
+import { CelularInput } from "../components/input/CelularInput";
+import { DataDeNascimentoInput } from "../components/input/DataDeNascimento";
+import { SenhaInput } from "../components/input/SenhaInput";
+import { CepInput } from "../components/input/CepInput";
+import { NomeInput } from "../components/input/TextInput";
+import { EnderecoTextInput } from "../components/input/EnderecoTextInput";
 
 export interface CadastroForm {
     pessoaTipo: string
@@ -65,20 +74,34 @@ function Cadastro() {
                     Pessoa
                 </label>
                 <label htmlFor="pessoaTipo">
-                    <input {...register("pessoaTipo")} type="radio" value="fisica" name="pessoaTipo" id="pessoaTipo" />
-                    Física
-                    <input type="radio" value="juridica" name="pessoaTipo" id="pessoaTipo" />
-                    Jurídica
+                    <PessoaTipoInput
+                        register={register}
+                        label="Física"
+                        value="fisica"
+                    />
+                    <PessoaTipoInput
+                        register={register}
+                        label="Jurídica"
+                        value="juridica"
+                    />
                 </label>
-                <Input label="nome" register={register} placeholder="Digite seu nome completo/razão social" />
-                <Input label="email" register={register} placeholder="Digite seu e-mail" />
+                <NomeInput register={register} />
+                <EmailInput register={register} />
                 <fieldset className="grid grid-cols-2 gap-4">
-                    <Input label="cpfCnpj" register={register} placeholder="Digite seu CPF/CNPJ" />
-                    <Input label="inscricaoEstadual" register={register} placeholder="Digite sua Inscrição Estadual" hidden />
-                    <Input label="celular" register={register} placeholder="Digite seu celular/telefone" />
-                    <Input label="dataDeNascimento" register={register} placeholder="dd/mm/aaaa" type="date" />
-                    <Input label="senha" register={register} placeholder="Senha" required />
-                    <Input label="confirmacaoDeSenha" register={register} placeholder="Confirme sua senha" />
+                    <CpfCnpjInput register={register} />
+                    <InscricaoEstadualInput register={register} /> 
+                    <CelularInput register={register} />
+                    <DataDeNascimentoInput register={register} />
+                    <SenhaInput
+                        registerName="senha"
+                        register={register}
+                        placeholder="Digite uma senha"
+                    />
+                    <SenhaInput
+                        registerName="confirmaSenha"
+                        register={register}
+                        placeholder="Repita sua senha"
+                    />
                 </fieldset>
                 <h2>Regras de Senha</h2>
                 <ul>
@@ -94,15 +117,56 @@ function Cadastro() {
                 <legend>
                     Endereço
                 </legend>
-                <Input label="cep" register={register} placeholder="Digite seu CEP" />
-                <Input label="logradouro" register={register} placeholder="Digite seu logradouro" required />
+                <CepInput register={register} />
+                <EnderecoTextInput
+                    registerName="logradouro"
+                    register={register}
+                    regexValdation={/([a-zA-ZáÁéÉíÍóÓãÃõÕúÚçÇ.']+[ ]{1}){1,}/}
+                    validationMessage="Digite um logradouro válido, com ao menos 2 palavras, sem traços"
+                    placeholder="Digite seu Logradouro"
+                    required
+                />
                 <fieldset className="grid grid-cols-2 gap-4">
-                    <Input label="bairro" register={register} placeholder="Digite seu bairro" required />
-                    <Input label="cidade" register={register} placeholder="Digite sua cidade" required />
-                    <Input label="estado" register={register} placeholder="Digite seu estado" required />
-                    <Input label="numero" register={register} placeholder="Digite seu número" required />
+                    <EnderecoTextInput
+                        register={register}
+                        registerName="bairro"
+                        regexValdation={/[a-zA-ZáÁéÉíÍóÓúÚãÃõÕ'çÇ. ]+/}
+                        validationMessage="Este campo é obrigatório"
+                        placeholder="Digite seu Bairro"
+                        required
+                    />
+                    <EnderecoTextInput
+                        register={register}
+                        registerName="cidade"
+                        regexValdation={/[a-zA-ZáÁéÉíÍóÓúÚãÃõÕ'çÇ. ]+/}
+                        validationMessage="Este campo é obrigatório"
+                        placeholder="Digite sua Cidade"
+                        required
+                    />
+                    <EnderecoTextInput
+                        register={register}
+                        registerName="estado"
+                        regexValdation={/[a-zA-ZáÁéÉíÍóÓúÚãÃõÕ'çÇ. ]+/}
+                        validationMessage="Este campo é obrigatório"
+                        placeholder="Digite seu Estado"
+                        required
+                    />
+                    <EnderecoTextInput
+                        register={register}
+                        registerName="numero"
+                        regexValdation={/[0-9]+/}
+                        validationMessage="Este campo é obrigatório"
+                        placeholder="Digite seu Número"
+                        required
+                    />
                 </fieldset>
-                <Input label="complemento" register={register} placeholder="Digite seu complemento" />
+                <EnderecoTextInput
+                    register={register}
+                    registerName="complemento"
+                    regexValdation={/[0-9]+/}
+                    validationMessage="Este campo é obrigatório"
+                    placeholder="Digite um complemento"
+                />
             </fieldset>
             <label className="flex gap-2 items-center my-12">
                 <input  type="checkbox" required />

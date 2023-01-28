@@ -43,11 +43,11 @@ function Login() {
             <form action="" className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
                 <Input
                     register={register}
-                    label="email"
+                    registerName="email"
                     placeholder="E-mail" />
                 <Input
                     register={register}
-                    label="password"
+                    registerName="password"
                     placeholder="Senha" />
 
                 {!isLoading && isError && (handleAuthError(error as ErrorResponse))}
