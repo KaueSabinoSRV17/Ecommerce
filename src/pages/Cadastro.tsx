@@ -4,7 +4,7 @@ import { Button } from "../components/Button"
 
 import { auth, db } from '../../firebase'
 import { collection, addDoc } from 'firebase/firestore'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { PessoaTipoInput } from "../components/input/PessoaTipoInput";
 import { EmailInput } from "../components/input/EmailInput";
 import { CpfCnpjInput } from "../components/input/CpfCnpjInput";
@@ -39,8 +39,9 @@ function Cadastro() {
 
     const { register, handleSubmit, formState } = useForm<CadastroForm>()
     const onSubmit: SubmitHandler<CadastroForm> = async data => {
-        const {email, senha} = data
-        await createUserWithEmailAndPassword(auth, email, senha)
+        const {email, senha, nome} = data
+        const {user} = await createUserWithEmailAndPassword(auth, email, senha)
+        await updateProfile(user, { displayName: nome })
        const cadastroCollection = collection(db, 'cliente')
        await addDoc(cadastroCollection, data)
     }

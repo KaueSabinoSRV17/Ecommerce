@@ -38,7 +38,9 @@ export function UpperHeader({setPesquisa}: {setPesquisa: React.Dispatch<React.Se
             <nav>
                 <ul className="flex items-center justify-center gap-4">
                 <li>
-                    <Link to="/login">Entrar {isLogged && 'Logou'}</Link>
+                    {!isLogged
+                        ? loggedUser?.displayName
+                        : <Link to="/login">Entrar</Link>}
                 </li>
                 <li>
                     <Link to="/carrinho">Carrinho</Link>
