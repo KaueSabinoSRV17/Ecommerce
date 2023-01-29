@@ -31,11 +31,13 @@ export function Input({ registerName: label, validationMessage, regexValidation,
         styles = styles + 'opacity-0'
     }
 
-    return <input
-        {...register(label, { minLength, maxLength, pattern: {value: regexValidation, message: validationMessage}, required })}
-        required={required}
-        type={type}
-        onChange={onChange}
-        className={type !== 'checkbox' ? styles : ''}
-        placeholder={placeholder} />
+    return (
+        <input
+            {...register(label, { minLength, maxLength, pattern: {value: regexValidation, message: validationMessage}, required })}
+            required={required}
+            type={type}
+            onChange={onChange}
+            className={type !== 'checkbox' ? styles : ''}
+            placeholder={placeholder} />
+    ) 
 }

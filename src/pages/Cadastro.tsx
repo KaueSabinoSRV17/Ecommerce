@@ -37,13 +37,17 @@ export interface CadastroForm {
 
 function Cadastro() {
 
-    const { register, handleSubmit } = useForm<CadastroForm>()
+    const { register, handleSubmit, formState } = useForm<CadastroForm>()
     const onSubmit: SubmitHandler<CadastroForm> = async data => {
         const {email, senha} = data
         await createUserWithEmailAndPassword(auth, email, senha)
        const cadastroCollection = collection(db, 'cliente')
        await addDoc(cadastroCollection, data)
     }
+
+    const { errors } = formState
+
+    const styledError = (message: string) => <span className="text-pink-button">{message}</span>
 
     return (
         <form className="mx-auto my-20 w-[45%]" onSubmit={handleSubmit(onSubmit)}>
@@ -88,22 +92,39 @@ function Cadastro() {
                     />
                 </label>
                 <NomeInput register={register} />
+                {styledError(errors.nome?.message || '')}
+
                 <EmailInput register={register} />
+                {styledError(errors.email?.message || '')}
+
                 <fieldset className="grid grid-cols-2 gap-4">
+
                     <CpfCnpjInput register={register} />
+                    {styledError(errors.cpfCnpj?.message || '')}
+
                     <InscricaoEstadualInput register={register} /> 
+                    {styledError(errors.inscricaoEstadual?.message || '')}
+
                     <CelularInput register={register} />
+                    {styledError(errors.celular?.message || '')}
+
                     <DataDeNascimentoInput register={register} />
+                    {styledError(errors.dataDeNascimento?.message || '')}
+
                     <SenhaInput
                         registerName="senha"
                         register={register}
                         placeholder="Digite uma senha"
                     />
+                    {styledError(errors.senha?.message || '')}
+
                     <SenhaInput
                         registerName="confirmaSenha"
                         register={register}
                         placeholder="Repita sua senha"
                     />
+                    {styledError(errors.confirmacaoDeSenha?.message || '')}
+
                 </fieldset>
                 <h2>Regras de Senha</h2>
                 <ul>
@@ -120,6 +141,8 @@ function Cadastro() {
                     Endereço
                 </legend>
                 <CepInput register={register} />
+                {styledError(errors.cep?.message || '')}
+
                 <EnderecoTextInput
                     registerName="logradouro"
                     register={register}
@@ -128,6 +151,8 @@ function Cadastro() {
                     placeholder="Digite seu Logradouro"
                     required
                 />
+                {styledError(errors.logradouro?.message || '')}
+
                 <fieldset className="grid grid-cols-2 gap-4">
                     <EnderecoTextInput
                         register={register}
@@ -137,6 +162,8 @@ function Cadastro() {
                         placeholder="Digite seu Bairro"
                         required
                     />
+                    {styledError(errors.bairro?.message || '')}
+
                     <EnderecoTextInput
                         register={register}
                         registerName="cidade"
@@ -145,6 +172,8 @@ function Cadastro() {
                         placeholder="Digite sua Cidade"
                         required
                     />
+                    {styledError(errors.cidade?.message || '')}
+
                     <EnderecoTextInput
                         register={register}
                         registerName="estado"
@@ -153,6 +182,8 @@ function Cadastro() {
                         placeholder="Digite seu Estado"
                         required
                     />
+                    {styledError(errors.estado?.message || '')}
+
                     <EnderecoTextInput
                         register={register}
                         registerName="numero"
@@ -161,14 +192,17 @@ function Cadastro() {
                         placeholder="Digite seu Número"
                         required
                     />
+                    {styledError(errors.numero?.message || '')}
+
                 </fieldset>
                 <EnderecoTextInput
                     register={register}
                     registerName="complemento"
-                    regexValdation={/[0-9]+/}
-                    validationMessage="Este campo é obrigatório"
+                    regexValdation={/[0-9A-Za-záÁóÓíÍúÚõÕãÃçÇêÊõÕôÔîÎ]+/}
+                    validationMessage=""
                     placeholder="Digite um complemento"
                 />
+
             </fieldset>
             <label className="flex gap-2 items-center my-12">
                 <input  type="checkbox" required />
