@@ -2,9 +2,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom"
 import { Button } from "../components/Button"
 
-import { db } from '../../firebase'
+import { auth, db } from '../../firebase'
 import { collection, addDoc } from 'firebase/firestore'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { PessoaTipoInput } from "../components/input/PessoaTipoInput";
 import { EmailInput } from "../components/input/EmailInput";
 import { CpfCnpjInput } from "../components/input/CpfCnpjInput";
@@ -39,6 +39,8 @@ function Cadastro() {
 
     const { register, handleSubmit } = useForm<CadastroForm>()
     const onSubmit: SubmitHandler<CadastroForm> = async data => {
+        const {email, senha} = data
+        await createUserWithEmailAndPassword(auth, email, senha)
        const cadastroCollection = collection(db, 'cliente')
        await addDoc(cadastroCollection, data)
     }

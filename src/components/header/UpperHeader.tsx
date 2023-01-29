@@ -1,11 +1,15 @@
 import { createRef, useContext, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { auth } from "../../../firebase";
 import { Input, styles } from "../Input";
 
 export function UpperHeader({setPesquisa}: {setPesquisa: React.Dispatch<React.SetStateAction<string>>}) {
     
     const navigation = useNavigate()
     const input = createRef<HTMLInputElement>()
+
+    const [loggedUser, isLogged] = useAuthState(auth)
     
     function handleForm(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -34,7 +38,7 @@ export function UpperHeader({setPesquisa}: {setPesquisa: React.Dispatch<React.Se
             <nav>
                 <ul className="flex items-center justify-center gap-4">
                 <li>
-                    <Link to="/login">Entrar</Link>
+                    <Link to="/login">Entrar {isLogged && 'Logou'}</Link>
                 </li>
                 <li>
                     <Link to="/carrinho">Carrinho</Link>

@@ -2,6 +2,7 @@
 import { createContext, lazy, Suspense, useContext, useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { useAuthState } from 'react-firebase-hooks/auth'
 const queryClient = new QueryClient()
 
 // Componentes que sempre estão em tela...

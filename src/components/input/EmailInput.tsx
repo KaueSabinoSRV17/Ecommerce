@@ -7,6 +7,7 @@ export const EmailInput = ({register}: FormHookInput) => (
         validationMessage="Digite um email válido"
         registerName="email"
         type="email"
+        required
         placeholder="Digite seu e-mail"
     />
 )

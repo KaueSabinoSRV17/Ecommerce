@@ -1,4 +1,4 @@
-import { auth, app } from '../../firebase'
+import { auth } from '../../firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,6 +7,9 @@ import { Input } from "../components/Input";
 import { useMutation } from 'react-query';
 import { loginRequest } from '../utils/api/loginRequest';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { EmailInput } from '../components/input/EmailInput';
+import { SenhaInput } from '../components/input/SenhaInput';
 
 export interface LoginData {
     'email': string,
@@ -41,14 +44,13 @@ function Login() {
                 <span>Não é cadastrado? <Link to="/cadastro" className="font-bold">Cadastre-se</Link></span>
             </header>
             <form action="" className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-                <Input
+
+                <EmailInput register={register} /> 
+                <SenhaInput
+                    registerName='password'
                     register={register}
-                    registerName="email"
-                    placeholder="E-mail" />
-                <Input
-                    register={register}
-                    registerName="password"
-                    placeholder="Senha" />
+                    placeholder='Digite sua senha'
+                />
 
                 {!isLoading && isError && (handleAuthError(error as ErrorResponse))}
 
