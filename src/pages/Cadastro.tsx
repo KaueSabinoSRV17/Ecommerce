@@ -15,6 +15,9 @@ import { SenhaInput } from "../components/input/SenhaInput";
 import { CepInput } from "../components/input/CepInput";
 import { NomeInput } from "../components/input/TextInput";
 import { EnderecoTextInput } from "../components/input/EnderecoTextInput";
+import { date, number, string, z } from 'zod'
+
+
 
 export interface CadastroForm {
     pessoaTipo: string
@@ -34,6 +37,38 @@ export interface CadastroForm {
     numero: string,
     complemento?: string,
 }
+
+const CadastroSchema = z.object({
+    pessoaTipo: string().regex(/(fisica|juridica)/, 'O tipo deve ser apenas física ou jurídica'),
+    nome: string().regex(/([^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+[ ]{1}[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+){1,}/, 'Digite ao menos um nome e sobrenome, sem números e caracteres especiais'),
+    email: string().email('Digite um email válido'),
+    cpfCnpj: number().min(14).positive('Insira apenas números positivos'),
+    inscricaoEstadual: number().min(14).positive('Insira apenas números positivos').optional(),
+    celular: number().min(11).positive('Insira apenas números positivos'),
+    dataDeNascimento: date().min(new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDay()), 'Apenas maiores de 18 anos podem se cadastrar!'),
+    senha: string().min(8, 'Digite uma senha com pelo menos 8 digitos').max(32, 'Digite uma senha com até 32 dígitos'),
+    confirmaSenha: string().min(8, 'Digite uma senha com pelo menos 8 digitos').max(32, 'Digite uma senha com até 32 dígitos'),
+    cep: string().regex(/[0-9]{5}[-]{1}[0-9]{3}/, 'Digite um cep com 5 números, seguidos por um traço, seguido de 3 números'),
+    logradouro: string().regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
+    bairro: string().regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
+    cidade: string().regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
+    estado: string().length(2, 'Digite uma sigla de estado com exatamente 2 dígitos!'),
+    numero: number().positive('Insira apenas números positivos'),
+    complemento: string().optional()
+}).superRefine(({senha, confirmaSenha}, context) => {
+    const checkValidityOfPassword = (password: string) => /[0-9]/.test(password) && /[a-z]/.test(password) && /[A-Z]/ && /[!@#$%&*()-=+{}[\]?°ºª~^]/.test(password)
+
+    const passwordRequirements = {
+        lowerCase: /[a-z]/,
+        upperCase: /[A-Z]/,
+        specialCaracter: /[!@#$%&*()-=+_.]/
+    }
+
+    for (const requirement of passwordRequirements) {
+        re
+    }
+    
+})
 
 function Cadastro() {
 
