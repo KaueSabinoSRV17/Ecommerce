@@ -56,17 +56,32 @@ const CadastroSchema = z.object({
     numero: number().positive('Insira apenas números positivos'),
     complemento: string().optional()
 }).superRefine(({senha, confirmaSenha}, context) => {
-    const checkValidityOfPassword = (password: string) => /[0-9]/.test(password) && /[a-z]/.test(password) && /[A-Z]/ && /[!@#$%&*()-=+{}[\]?°ºª~^]/.test(password)
 
     const passwordRequirements = {
-        lowerCase: /[a-z]/,
-        upperCase: /[A-Z]/,
-        specialCaracter: /[!@#$%&*()-=+_.]/
+        'Letras Maúsculas': /[a-z]/,
+        'Letras Minúsculas': /[A-Z]/,
+        'Caracteres Especiais': /[!@#$%&*()-=+_.]/,
+        'Números': /[0-9]/
     }
 
-    for (const requirement of passwordRequirements) {
-        re
+    // Check if a password rule is satisfied, and if is not, adds a new Zod error to the Context
+    Object.entries(passwordRequirements).forEach(requirement => {
+        const [name, regex] = requirement
+        if (!regex.test(senha))  {
+            context.addIssue({
+                code: 'custom',
+                message: `Digite uma senha com ${name}`
+            })
+        }
+    })
+
+    if (senha !== confirmaSenha) {
+        context.addIssue({
+            code: 'custom',
+            message: 'A confirmação de senha estã diferente da senha'
+        })
     }
+
     
 })
 
