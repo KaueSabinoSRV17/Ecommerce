@@ -41,6 +41,7 @@ export function UpperHeader({setPesquisa}: {setPesquisa: React.Dispatch<React.Se
                     {!isLogged
                         ? loggedUser?.displayName
                         : <Link to="/login">Entrar</Link>}
+                        <Link to="/login">Entrar</Link>
                 </li>
                 <li>
                     <Link to="/carrinho">Carrinho</Link>

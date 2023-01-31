@@ -16,46 +16,30 @@ import { CepInput } from "../components/input/CepInput";
 import { NomeInput } from "../components/input/TextInput";
 import { EnderecoTextInput } from "../components/input/EnderecoTextInput";
 import { date, number, string, z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 
 
-export interface CadastroForm {
-    pessoaTipo: string
-    nome: string,
-    email: string,
-    cpfCnpj: string,
-    inscricaoEstadual?: string,
-    celular: string,
-    dataDeNascimento: string,
-    senha: string,
-    confirmacaoDeSenha: string,
-    cep?: string,
-    logradouro: string,
-    bairro: string,
-    cidade: string,
-    estado: string,
-    numero: string,
-    complemento?: string,
-}
+
 
 const CadastroSchema = z.object({
-    pessoaTipo: string().regex(/(fisica|juridica)/, 'O tipo deve ser apenas física ou jurídica'),
-    nome: string().regex(/([^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+[ ]{1}[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+){1,}/, 'Digite ao menos um nome e sobrenome, sem números e caracteres especiais'),
-    email: string().email('Digite um email válido'),
-    cpfCnpj: number().min(14).positive('Insira apenas números positivos'),
-    inscricaoEstadual: number().min(14).positive('Insira apenas números positivos').optional(),
-    celular: number().min(11).positive('Insira apenas números positivos'),
-    dataDeNascimento: date().min(new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDay()), 'Apenas maiores de 18 anos podem se cadastrar!'),
-    senha: string().min(8, 'Digite uma senha com pelo menos 8 digitos').max(32, 'Digite uma senha com até 32 dígitos'),
-    confirmaSenha: string().min(8, 'Digite uma senha com pelo menos 8 digitos').max(32, 'Digite uma senha com até 32 dígitos'),
-    cep: string().regex(/[0-9]{5}[-]{1}[0-9]{3}/, 'Digite um cep com 5 números, seguidos por um traço, seguido de 3 números'),
-    logradouro: string().regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
-    bairro: string().regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
-    cidade: string().regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
-    estado: string().length(2, 'Digite uma sigla de estado com exatamente 2 dígitos!'),
-    numero: number().positive('Insira apenas números positivos'),
-    complemento: string().optional()
-}).superRefine(({senha, confirmaSenha}, context) => {
+    pessoaTipo: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/(fisica|juridica)/, 'O tipo deve ser apenas física ou jurídica'),
+    nome: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/([^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+[ ]{1}[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+){1,}/, 'Digite ao menos um nome e sobrenome, sem números e caracteres especiais'),
+    email: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).email('Digite um email válido'),
+    cpfCnpj: z.coerce.number({required_error: 'Obrigatório', invalid_type_error: 'Digite números, não textos'}).min(11, 'Digite um mínimo de 11 dígitos').positive('Insira apenas números positivos'),
+    inscricaoEstadual: z.coerce.number({required_error: 'Obrigatório', invalid_type_error: 'Digite números, não textos'}).min(11, 'Digite um mínimo de 11 dígitos').positive('Insira apenas números positivos').optional().nullable(),
+    celular: z.coerce.number({required_error: 'Obrigatório', invalid_type_error: 'Digite números, não textos'}).min(11, 'Digite um mínimo de 11 dígitos').positive('Insira apenas números positivos'),
+    dataDeNascimento: z.coerce.date().max(new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDay()), 'Apenas maiores de 18 anos podem se cadastrar!'),
+    senha: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).min(8, 'Digite uma senha com pelo menos 8 digitos').max(32, 'Digite uma senha com até 32 dígitos').regex(/[a-z]/, 'obrigatório letras minúsculas').regex(/[A-Z]/, 'obrigatório letras máiusculas').regex(/[0-9]/, 'obrigatório números').regex(/[!@#$%&*()-=+_.]/, 'obrigatório caracteres especiais'),
+    confirmacaoDeSenha: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).min(8, 'Digite uma senha com pelo menos 8 digitos').max(32, 'Digite uma senha com até 32 dígitos'),
+    cep: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/[0-9]{5}[-]{1}[0-9]{3}/, 'Digite um cep com 5 números, seguidos por um traço, seguido de 3 números'),
+    logradouro: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
+    bairro: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
+    cidade: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
+    estado: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).length(2, 'Digite uma sigla de estado com exatamente 2 dígitos!'),
+    numero: z.coerce.number({required_error: 'Obrigatório', invalid_type_error: 'Digite números, não textos'}).positive('Insira apenas números positivos'),
+    complemento: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).optional()
+}).superRefine(({senha, confirmacaoDeSenha}, context) => {
 
     const passwordRequirements = {
         'Letras Maúsculas': /[a-z]/,
@@ -75,7 +59,7 @@ const CadastroSchema = z.object({
         }
     })
 
-    if (senha !== confirmaSenha) {
+    if (senha !== confirmacaoDeSenha) {
         context.addIssue({
             code: 'custom',
             message: 'A confirmação de senha estã diferente da senha'
@@ -85,9 +69,12 @@ const CadastroSchema = z.object({
     
 })
 
+type CadastroForm = z.infer<typeof CadastroSchema>
+
+
 function Cadastro() {
 
-    const { register, handleSubmit, formState } = useForm<CadastroForm>()
+    const { register, handleSubmit, formState } = useForm<CadastroForm>({resolver: zodResolver(CadastroSchema)})
     const onSubmit: SubmitHandler<CadastroForm> = async data => {
         const {email, senha, nome} = data
         const {user} = await createUserWithEmailAndPassword(auth, email, senha)
@@ -98,7 +85,7 @@ function Cadastro() {
 
     const { errors } = formState
 
-    const styledError = (message: string) => <span className="text-pink-button">{message}</span>
+    const styledError = (message: string) => <span className="text-pink-button text-xs">{message}</span>
 
     return (
         <form className="mx-auto my-20 w-[45%]" onSubmit={handleSubmit(onSubmit)}>
@@ -150,8 +137,10 @@ function Cadastro() {
 
                 <fieldset className="grid grid-cols-2 gap-4">
 
-                    <CpfCnpjInput register={register} />
+                <label>
                     {styledError(errors.cpfCnpj?.message || '')}
+                    <CpfCnpjInput register={register} />
+                </label>
 
                     <InscricaoEstadualInput register={register} /> 
                     {styledError(errors.inscricaoEstadual?.message || '')}

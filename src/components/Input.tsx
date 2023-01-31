@@ -1,6 +1,5 @@
 import { InputHTMLAttributes } from "react";
 import { FieldValues, Path, UseFormRegister } from "react-hook-form";
-import { CadastroForm } from "../pages/Cadastro";
 import { LoginData } from "../pages/Login";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement>, FormHookInput {
@@ -33,7 +32,7 @@ export function Input({ registerName: label, validationMessage, regexValidation,
 
     return (
         <input
-            {...register(label, { minLength, maxLength, pattern: {value: regexValidation, message: validationMessage}, required })}
+            {...register(label)}
             required={required}
             type={type}
             onChange={onChange}
