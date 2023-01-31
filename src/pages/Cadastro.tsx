@@ -1,76 +1,43 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom"
 import { Button } from "../components/Button"
-
 import { auth, db } from '../../firebase'
 import { collection, addDoc } from 'firebase/firestore'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { PessoaTipoInput } from "../components/input/PessoaTipoInput";
-import { EmailInput } from "../components/input/EmailInput";
-import { CpfCnpjInput } from "../components/input/CpfCnpjInput";
-import { InscricaoEstadualInput } from "../components/input/InscricaoEstadualInput";
-import { CelularInput } from "../components/input/CelularInput";
-import { DataDeNascimentoInput } from "../components/input/DataDeNascimento";
-import { SenhaInput } from "../components/input/SenhaInput";
-import { CepInput } from "../components/input/CepInput";
-import { NomeInput } from "../components/input/TextInput";
-import { EnderecoTextInput } from "../components/input/EnderecoTextInput";
-import { date, number, string, z } from 'zod'
+import { PessoaTipoInput, pessoaTipoSchema } from "../components/input/PessoaTipoInput";
+import { EmailInput, emailSchema } from "../components/input/EmailInput";
+import { CpfCnpjInput, cpfCnpjSchema } from "../components/input/CpfCnpjInput";
+import { InscricaoEstadualInput, inscricaoEstadualSchema } from "../components/input/InscricaoEstadualInput";
+import { CelularInput, celularSchema } from "../components/input/CelularInput";
+import { DataDeNascimentoInput, dataDeNascimentoSchema } from "../components/input/DataDeNascimento";
+import { SenhaInput, senhaSchema } from "../components/input/SenhaInput";
+import { CepInput, cepSchema } from "../components/input/CepInput";
+import { NomeInput, nomeSchema } from "../components/input/TextInput";
+import { EnderecoTextInput, estadoSchema } from "../components/input/EnderecoTextInput";
+import { string, z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-
-
-
+import { textoSemEspeciaisSchema, validacaoContraStringsEmNumeros } from "../components/Input";
 
 const CadastroSchema = z.object({
-    pessoaTipo: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/(fisica|juridica)/, 'O tipo deve ser apenas física ou jurídica'),
-    nome: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/([^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+[ ]{1}[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+){1,}/, 'Digite ao menos um nome e sobrenome, sem números e caracteres especiais'),
-    email: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).email('Digite um email válido'),
-    cpfCnpj: z.coerce.number({required_error: 'Obrigatório', invalid_type_error: 'Digite números, não textos'}).min(11, 'Digite um mínimo de 11 dígitos').positive('Insira apenas números positivos'),
-    inscricaoEstadual: z.coerce.number({required_error: 'Obrigatório', invalid_type_error: 'Digite números, não textos'}).min(11, 'Digite um mínimo de 11 dígitos').positive('Insira apenas números positivos').optional().nullable(),
-    celular: z.coerce.number({required_error: 'Obrigatório', invalid_type_error: 'Digite números, não textos'}).min(11, 'Digite um mínimo de 11 dígitos').positive('Insira apenas números positivos'),
-    dataDeNascimento: z.coerce.date().max(new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDay()), 'Apenas maiores de 18 anos podem se cadastrar!'),
-    senha: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).min(8, 'Digite uma senha com pelo menos 8 digitos').max(32, 'Digite uma senha com até 32 dígitos').regex(/[a-z]/, 'obrigatório letras minúsculas').regex(/[A-Z]/, 'obrigatório letras máiusculas').regex(/[0-9]/, 'obrigatório números').regex(/[!@#$%&*()-=+_.]/, 'obrigatório caracteres especiais'),
-    confirmacaoDeSenha: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).min(8, 'Digite uma senha com pelo menos 8 digitos').max(32, 'Digite uma senha com até 32 dígitos'),
-    cep: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/[0-9]{5}[-]{1}[0-9]{3}/, 'Digite um cep com 5 números, seguidos por um traço, seguido de 3 números'),
-    logradouro: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
-    bairro: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
-    cidade: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).regex(/[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+/, 'Não insira números e caracteres especiais'),
-    estado: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).length(2, 'Digite uma sigla de estado com exatamente 2 dígitos!'),
-    numero: z.coerce.number({required_error: 'Obrigatório', invalid_type_error: 'Digite números, não textos'}).positive('Insira apenas números positivos'),
-    complemento: string({required_error: 'Obrigatório', invalid_type_error: 'Digite texto, não números'}).optional()
-}).superRefine(({senha, confirmacaoDeSenha}, context) => {
-
-    const passwordRequirements = {
-        'Letras Maúsculas': /[a-z]/,
-        'Letras Minúsculas': /[A-Z]/,
-        'Caracteres Especiais': /[!@#$%&*()-=+_.]/,
-        'Números': /[0-9]/
-    }
-
-    // Check if a password rule is satisfied, and if is not, adds a new Zod error to the Context
-    Object.entries(passwordRequirements).forEach(requirement => {
-        const [name, regex] = requirement
-        if (!regex.test(senha))  {
-            context.addIssue({
-                code: 'custom',
-                message: `Digite uma senha com ${name}`
-            })
-        }
-    })
-
-    if (senha !== confirmacaoDeSenha) {
-        context.addIssue({
-            code: 'custom',
-            message: 'A confirmação de senha estã diferente da senha'
-        })
-    }
-
-    
+    pessoaTipo: pessoaTipoSchema,
+    nome: nomeSchema,
+    email: emailSchema,
+    cpfCnpj: cpfCnpjSchema,
+    inscricaoEstadual: inscricaoEstadualSchema,
+    celular: celularSchema,
+    dataDeNascimento: dataDeNascimentoSchema,
+    senha: senhaSchema,
+    confirmacaoDeSenha: senhaSchema,
+    cep: cepSchema,
+    logradouro: textoSemEspeciaisSchema,
+    bairro: textoSemEspeciaisSchema,
+    cidade: textoSemEspeciaisSchema,
+    estado: estadoSchema,
+    numero: z.coerce.number(validacaoContraStringsEmNumeros).positive('Insira apenas números positivos'),
+    complemento: string().optional()
 })
 
 type CadastroForm = z.infer<typeof CadastroSchema>
-
 
 function Cadastro() {
 
@@ -85,7 +52,7 @@ function Cadastro() {
 
     const { errors } = formState
 
-    const styledError = (message: string) => <span className="text-pink-button text-xs">{message}</span>
+    const styledError = (message: string) => <span className="text-pink-button text-[10px]">{message}</span>
 
     return (
         <form className="mx-auto my-20 w-[45%]" onSubmit={handleSubmit(onSubmit)}>
@@ -135,7 +102,7 @@ function Cadastro() {
                 <EmailInput register={register} />
                 {styledError(errors.email?.message || '')}
 
-                <fieldset className="grid grid-cols-2 gap-4">
+                <fieldset className="grid justify-center items-center grid-cols-2 gap-4">
 
                 <label>
                     {styledError(errors.cpfCnpj?.message || '')}
@@ -176,7 +143,7 @@ function Cadastro() {
                     <li>Um carácter especial;</li>
                 </ul>
             </fieldset>
-            <fieldset className="mt-4 flex flex-col gap-4">
+            <fieldset className="mt-4 flex justify-center flex-col gap-4">
                 <legend>
                     Endereço
                 </legend>

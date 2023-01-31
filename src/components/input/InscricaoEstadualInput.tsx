@@ -1,4 +1,13 @@
-import { FormHookInput, Input } from "../Input";
+import { FormHookInput, Input, validacaoContraStringsEmNumeros } from "../Input";
+import { z } from 'zod'
+
+export const inscricaoEstadualSchema =
+    z.coerce.number(validacaoContraStringsEmNumeros)
+        .min(11, 'Digite um mínimo de 11 dígitos')
+        .positive('Insira apenas números positivos')
+        .optional()
+        .nullable()
+        .nullish()
 
 export const InscricaoEstadualInput = ({register}: FormHookInput) => (
     <Input

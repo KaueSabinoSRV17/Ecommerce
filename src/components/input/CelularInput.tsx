@@ -1,4 +1,10 @@
-import { FormHookInput, Input } from "../Input";
+import { FormHookInput, Input, validacaoContraStringsEmNumeros } from "../Input";
+import { z } from 'zod'
+
+export const celularSchema = 
+    z.coerce.number(validacaoContraStringsEmNumeros)
+        .min(11, 'Digite um mínimo de 11 dígitos')
+        .positive('Insira apenas números positivos')
 
 export const CelularInput = ({register}: FormHookInput) => (
     <Input

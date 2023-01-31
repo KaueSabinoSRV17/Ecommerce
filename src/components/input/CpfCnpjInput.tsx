@@ -1,6 +1,12 @@
-import { FormHookInput, Input } from "../Input";
+import { FormHookInput, Input, validacaoContraStringsEmNumeros } from "../Input";
+import { z } from 'zod'
 
-export const CpfCnpjInput = ({register, registerName}: FormHookInput) => (
+export const cpfCnpjSchema = 
+    z.coerce.number(validacaoContraStringsEmNumeros)
+        .min(11, 'Digite um mínimo de 11 dígitos')
+        .positive('Insira apenas números positivos')
+
+export const CpfCnpjInput = ({register}: FormHookInput) => (
     <Input
         register={register}
         registerName="cpfCnpj"

@@ -1,4 +1,12 @@
-import { FormHookInput, Input } from "../Input";
+import { FormHookInput, Input, validacaoContraStringsEmNumeros } from "../Input";
+import { z } from 'zod'
+
+export const cepSchema = 
+    z.string(validacaoContraStringsEmNumeros)
+        .regex(
+            /[0-9]{5}[-]{1}[0-9]{3}/,
+            'Digite um cep com 5 números, seguidos por um traço, seguido de 3 números'
+        )
 
 export const CepInput = ({register}: FormHookInput) => (
     <Input

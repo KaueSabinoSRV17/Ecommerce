@@ -1,4 +1,11 @@
 import { FormHookInput, Input } from "../Input";
+import { z } from 'zod'
+
+const dataDeHoje = new Date()
+const dezoitoAnosAtras = new Date(dataDeHoje.getFullYear() - 18, dataDeHoje.getMonth(), dataDeHoje.getDay())
+
+export const dataDeNascimentoSchema = z.coerce.date() 
+    .max(dezoitoAnosAtras, 'Apenas maiores de 18 anos podem se cadastrar!')
 
 export const DataDeNascimentoInput = ({register}: FormHookInput) => (
     <Input

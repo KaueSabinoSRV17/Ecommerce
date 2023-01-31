@@ -1,6 +1,16 @@
 import { InputHTMLAttributes } from "react";
 import { Path } from "react-hook-form";
-import { FormHookInput, Input } from "../Input";
+import { FormHookInput, Input, validacaoDeObrigatorios } from "../Input";
+import { z } from 'zod'
+
+export const senhaSchema = 
+    z.string(validacaoDeObrigatorios)
+        .min(8, 'Digite uma senha com pelo menos 8 digitos')
+        .max(32, 'Digite uma senha com até 32 dígitos')
+        .regex(/[a-z]/, 'obrigatório letras minúsculas')
+        .regex(/[A-Z]/, 'obrigatório letras máiusculas')
+        .regex(/[0-9]/, 'obrigatório números')
+        .regex(/[!@#$%&*()-=+_.]/, 'obrigatório caracteres especiais')
 
 interface SenhaInputProps extends FormHookInput, InputHTMLAttributes<HTMLInputElement> {
     registerName: Path<any>

@@ -1,4 +1,11 @@
-import { FormHookInput, Input, InputProps } from "../Input";
+import { FormHookInput, Input, InputProps, validacaoContraNumerosEmStrings } from "../Input";
+import { z } from 'zod'
+
+export const nomeSchema = z.string(validacaoContraNumerosEmStrings)
+    .regex(
+        /([^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+[ ]{1}[^0-9-()&!@#$%¨*+{[\]{}|\\:;?°ºª]+){1,}/,
+        'Digite ao menos um nome e sobrenome, sem números e caracteres especiais'
+    )
 
 export const NomeInput = ({register}: FormHookInput) => (
     <Input
