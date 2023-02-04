@@ -16,7 +16,7 @@ import { NomeInput, nomeSchema } from "../components/input/TextInput";
 import { EnderecoTextInput, estadoSchema } from "../components/input/EnderecoTextInput";
 import { string, z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { StyledError, textoSemEspeciaisSchema, validacaoContraStringsEmNumeros } from "../components/Input";
+import { StyledError, styles, textoSemEspeciaisSchema, validacaoContraStringsEmNumeros } from "../components/Input";
 
 const CadastroSchema = z.object({
     pessoaTipo: pessoaTipoSchema,
@@ -79,20 +79,24 @@ function Cadastro() {
                 <legend>
                     Dados Pessoais
                 </legend>
-                <label htmlFor="pessoaTipo" className="rounded-full bg-white">
+                <label htmlFor="pessoaTipo" className="italic border-blue-main text-black placeholder:text-blue-main text-[12px] font-medium border-[1px] py-[6px] px-6 h-[3.125rem] rounded-full w-full bg-white text-center pt-3">
                     Pessoa
                 </label>
-                <label htmlFor="pessoaTipo">
-                    <PessoaTipoInput
-                        register={register}
-                        label="Física"
-                        value="fisica"
-                    />
-                    <PessoaTipoInput
-                        register={register}
-                        label="Jurídica"
-                        value="juridica"
-                    />
+                <label className="flex gap-2">
+                    <label className="italic border-blue-main text-black placeholder:text-blue-main text-[12px] font-medium border-[1px] py-[6px] px-6 h-[3.125rem] rounded-full w-full bg-white text-center pt-3 flex items-center justify-center gap-2">
+                        <PessoaTipoInput
+                            register={register}
+                            label="Física"
+                            value="fisica"
+                        />
+                    </label>
+                    <label className="italic border-blue-main text-black placeholder:text-blue-main text-[12px] font-medium border-[1px] py-[6px] px-6 h-[3.125rem] rounded-full w-full bg-white text-center pt-3 flex items-center justify-center gap-2">
+                        <PessoaTipoInput
+                            register={register}
+                            label="Jurídica"
+                            value="juridica"
+                        />
+                    </label>
                 </label>
 
                 <StyledError message={errors.nome?.message}  />

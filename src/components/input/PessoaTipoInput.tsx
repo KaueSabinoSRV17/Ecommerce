@@ -1,6 +1,6 @@
 import { InputHTMLAttributes } from "react";
 import { UseFormRegister } from "react-hook-form";
-import { FormHookInput, InputProps, validacaoContraNumerosEmStrings } from "../Input";
+import { FormHookInput, InputProps, styles, validacaoContraNumerosEmStrings } from "../Input";
 import { z } from 'zod'
 
 interface PessoaTipoInputProps extends InputHTMLAttributes<HTMLInputElement>, FormHookInput {
