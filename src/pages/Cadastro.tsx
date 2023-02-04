@@ -16,7 +16,7 @@ import { NomeInput, nomeSchema } from "../components/input/TextInput";
 import { EnderecoTextInput, estadoSchema } from "../components/input/EnderecoTextInput";
 import { string, z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { textoSemEspeciaisSchema, validacaoContraStringsEmNumeros } from "../components/Input";
+import { StyledError, textoSemEspeciaisSchema, validacaoContraStringsEmNumeros } from "../components/Input";
 
 const CadastroSchema = z.object({
     pessoaTipo: pessoaTipoSchema,
@@ -51,8 +51,6 @@ function Cadastro() {
     }
 
     const { errors } = formState
-
-    const styledError = (message: string) => <span className="text-pink-button text-[10px]">{message}</span>
 
     return (
         <form className="mx-auto my-20 w-[45%]" onSubmit={handleSubmit(onSubmit)}>
@@ -96,41 +94,52 @@ function Cadastro() {
                         value="juridica"
                     />
                 </label>
-                <NomeInput register={register} />
-                {styledError(errors.nome?.message || '')}
 
+                <StyledError message={errors.nome?.message}  />
+                <NomeInput register={register} />
+
+                <StyledError message={errors.email?.message}  />
                 <EmailInput register={register} />
-                {styledError(errors.email?.message || '')}
 
                 <fieldset className="grid justify-center items-center grid-cols-2 gap-4">
 
-                <label>
-                    {styledError(errors.cpfCnpj?.message || '')}
-                    <CpfCnpjInput register={register} />
-                </label>
+                    <label>
+                        <StyledError message={errors.cpfCnpj?.message} />
+                        <CpfCnpjInput register={register} />
+                    </label>
 
-                    <InscricaoEstadualInput register={register} /> 
-                    {styledError(errors.inscricaoEstadual?.message || '')}
+                    <label>
+                        <StyledError message={errors.inscricaoEstadual?.message} />
+                        <InscricaoEstadualInput register={register} /> 
+                    </label>
 
-                    <CelularInput register={register} />
-                    {styledError(errors.celular?.message || '')}
+                    <label>
+                        <StyledError message={errors.celular?.message} />
+                        <CelularInput register={register} />
+                    </label> 
 
-                    <DataDeNascimentoInput register={register} />
-                    {styledError(errors.dataDeNascimento?.message || '')}
+                    <label>
+                        <StyledError message={errors.dataDeNascimento?.message} />
+                        <DataDeNascimentoInput register={register} />
+                    </label>
 
-                    <SenhaInput
-                        registerName="senha"
-                        register={register}
-                        placeholder="Digite uma senha"
-                    />
-                    {styledError(errors.senha?.message || '')}
+                    <label>
+                        <StyledError message={errors.senha?.message} />
+                        <SenhaInput
+                            registerName="senha"
+                            register={register}
+                            placeholder="Digite uma senha"
+                        />
+                    </label>
 
-                    <SenhaInput
-                        registerName="confirmaSenha"
-                        register={register}
-                        placeholder="Repita sua senha"
-                    />
-                    {styledError(errors.confirmacaoDeSenha?.message || '')}
+                    <label>
+                        <StyledError message={errors.senha?.message} />
+                        <SenhaInput
+                            registerName="confirmaSenha"
+                            register={register}
+                            placeholder="Repita sua senha"
+                        />
+                    </label>
 
                 </fieldset>
                 <h2>Regras de Senha</h2>
@@ -147,9 +156,11 @@ function Cadastro() {
                 <legend>
                     Endereço
                 </legend>
-                <CepInput register={register} />
-                {styledError(errors.cep?.message || '')}
 
+                <StyledError message={errors.cep?.message} />
+                <CepInput register={register} />
+
+                <StyledError message={errors.logradouro?.message} />
                 <EnderecoTextInput
                     registerName="logradouro"
                     register={register}
@@ -158,50 +169,59 @@ function Cadastro() {
                     placeholder="Digite seu Logradouro"
                     required
                 />
-                {styledError(errors.logradouro?.message || '')}
 
                 <fieldset className="grid grid-cols-2 gap-4">
-                    <EnderecoTextInput
-                        register={register}
-                        registerName="bairro"
-                        regexValdation={/[a-zA-ZáÁéÉíÍóÓúÚãÃõÕ'çÇ. ]+/}
-                        validationMessage="Este campo é obrigatório"
-                        placeholder="Digite seu Bairro"
-                        required
-                    />
-                    {styledError(errors.bairro?.message || '')}
 
-                    <EnderecoTextInput
-                        register={register}
-                        registerName="cidade"
-                        regexValdation={/[a-zA-ZáÁéÉíÍóÓúÚãÃõÕ'çÇ. ]+/}
-                        validationMessage="Este campo é obrigatório"
-                        placeholder="Digite sua Cidade"
-                        required
-                    />
-                    {styledError(errors.cidade?.message || '')}
+                    <label>
+                        <StyledError message={errors.bairro?.message} />
+                        <EnderecoTextInput
+                            register={register}
+                            registerName="bairro"
+                            regexValdation={/[a-zA-ZáÁéÉíÍóÓúÚãÃõÕ'çÇ. ]+/}
+                            validationMessage="Este campo é obrigatório"
+                            placeholder="Digite seu Bairro"
+                            required
+                        />
+                    </label>
 
-                    <EnderecoTextInput
-                        register={register}
-                        registerName="estado"
-                        regexValdation={/[a-zA-ZáÁéÉíÍóÓúÚãÃõÕ'çÇ. ]+/}
-                        validationMessage="Este campo é obrigatório"
-                        placeholder="Digite seu Estado"
-                        required
-                    />
-                    {styledError(errors.estado?.message || '')}
+                    <label>
+                        <StyledError message={errors.cidade?.message} />
+                        <EnderecoTextInput
+                            register={register}
+                            registerName="cidade"
+                            regexValdation={/[a-zA-ZáÁéÉíÍóÓúÚãÃõÕ'çÇ. ]+/}
+                            validationMessage="Este campo é obrigatório"
+                            placeholder="Digite sua Cidade"
+                            required
+                        />
+                    </label>
 
-                    <EnderecoTextInput
-                        register={register}
-                        registerName="numero"
-                        regexValdation={/[0-9]+/}
-                        validationMessage="Este campo é obrigatório"
-                        placeholder="Digite seu Número"
-                        required
-                    />
-                    {styledError(errors.numero?.message || '')}
+                    <label>
+                        <StyledError message={errors.estado?.message} />
+                        <EnderecoTextInput
+                            register={register}
+                            registerName="estado"
+                            regexValdation={/[a-zA-ZáÁéÉíÍóÓúÚãÃõÕ'çÇ. ]+/}
+                            validationMessage="Este campo é obrigatório"
+                            placeholder="Digite seu Estado"
+                            required
+                        />
+                    </label>
+
+                    <label>
+                        <StyledError message={errors.numero?.message} />
+                        <EnderecoTextInput
+                            register={register}
+                            registerName="numero"
+                            regexValdation={/[0-9]+/}
+                            validationMessage="Este campo é obrigatório"
+                            placeholder="Digite seu Número"
+                            required
+                        />
+                    </label>
 
                 </fieldset>
+
                 <EnderecoTextInput
                     register={register}
                     registerName="complemento"

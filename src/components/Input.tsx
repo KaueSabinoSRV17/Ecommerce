@@ -13,6 +13,10 @@ export interface FormHookInput {
     register: UseFormRegister<any>
 }
 
+
+export type ErrorProps = {message: string | undefined}
+export const StyledError = ({message}: ErrorProps) => <span className="text-pink-button text-[10px]">{message}</span>
+
 export const validacaoDeObrigatorios = {required_error: 'Obrigatório'}
 export const validacaoContraNumerosEmStrings = {...validacaoDeObrigatorios, invalid_type_error: 'Digite texto, não números'}
 export const validacaoContraStringsEmNumeros = {...validacaoDeObrigatorios, invalid_type_error: 'Digite números, não texto'}
