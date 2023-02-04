@@ -33,7 +33,7 @@ export let styles = "italic border-blue-main text-black placeholder:text-blue-ma
 export function Input({ registerName: label, validationMessage, regexValidation, onChange, register, ...props }: InputProps) {
 
     // Html Props'
-    let { type, placeholder, hidden } = props
+    let { type, placeholder, hidden, value } = props
 
     const { minLength, maxLength, required } = props
 
@@ -48,6 +48,7 @@ export function Input({ registerName: label, validationMessage, regexValidation,
 
     return (
         <input
+            value={value}
             {...register(label)}
             required={required}
             type={type}
